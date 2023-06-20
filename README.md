@@ -1,6 +1,4 @@
-# zdesigner-ai
-
-## Background Remover AI
+# ZDesigner AI
 
 ![App screenshot](public/app-screenshot.png)
 
