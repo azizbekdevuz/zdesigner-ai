@@ -1,6 +1,6 @@
 # ZDesigner AI
 
-![App screenshot](public/app-screenshot.png)
+![Interior design image](public/interior-design.png)
 
 ## How to use
 
