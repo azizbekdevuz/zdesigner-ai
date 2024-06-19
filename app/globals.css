@@ -4,24 +4,60 @@
 
 :root {
   --foreground-rgb: 255, 255, 255;
-  --background-start-rgb: 0, 0, 0;
-  --background-end-rgb: 0, 0, 0;
+  --background-start-rgb: 0, 4, 40;
+  --background-end-rgb: 0, 78, 146;
 }
 
 @media (prefers-color-scheme: dark) {
   :root {
     --foreground-rgb: 255, 255, 255;
-    --background-start-rgb: 0, 0, 0;
-    --background-end-rgb: 0, 0, 0;
+    --background-start-rgb: 0, 4, 40;
+    --background-end-rgb: 0, 78, 146;
   }
 }
 
 body {
   color: rgb(var(--foreground-rgb));
+}
+
+.animated-background {
   background: linear-gradient(
       to bottom,
       transparent,
       rgb(var(--background-end-rgb))
     )
     rgb(var(--background-start-rgb));
+  background-size: 200% 200%;
+  animation: motionBackground 10s ease infinite;
+}
+
+@keyframes motionBackground {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@media (max-width: 768px) {
+  .home-container, .left-section, .right-section {
+    width: 100%;
+  }
+
+  .left-section, .right-section {
+    padding: 16px;
+  }
+
+  .home-container {
+    flex-direction: column;
+  }
+
+  .info-section {
+    flex-direction: column;
+    text-align: center;
+  }
 }

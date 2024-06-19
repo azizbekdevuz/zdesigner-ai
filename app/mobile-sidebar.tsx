@@ -1,112 +1,121 @@
-import { Fragment } from "react";
+import { useState, useEffect } from "react";
 import { usePathname } from "next/navigation";
-import { XMarkIcon } from "@heroicons/react/24/outline";
-import { Transition } from "@headlessui/react";
-import { Dialog } from "@headlessui/react";
 import { navigation } from "@/common";
 import { classNames } from "@/utils";
+import Link from "next/link";
+import { FiMenu, FiX } from "react-icons/fi";
 
-type SidebarProps = {
-  sidebarOpen: boolean;
-  setSidebarOpen(open: boolean): void;
+const titleGradient = {
+  background:
+    "linear-gradient(270deg, #ff7e5f, #feb47b, #ff7e5f)",
+  backgroundSize: "200% 200%",
+  animation: "gradientAnimation 5s ease infinite",
+  WebkitBackgroundClip: "text",
+  WebkitTextFillColor: "transparent",
+  MozBackgroundClip: "text",
+  MozTextFillColor: "transparent",
 };
 
-export function MobileSidebar({ sidebarOpen, setSidebarOpen }: SidebarProps) {
+const gradientAnimation = `
+@keyframes gradientAnimation {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}`;
+
+interface MobileSidebarProps {
+  sidebarOpen: boolean;
+  setSidebarOpen: React.Dispatch<React.SetStateAction<boolean>>;
+  setCurrentPage: (page: string) => void;
+}
+
+export function MobileSidebar({ sidebarOpen, setSidebarOpen, setCurrentPage }: MobileSidebarProps) {
   const pathName = usePathname();
 
+  useEffect(() => {
+    const styleElement = document.createElement("style");
+    styleElement.innerHTML = gradientAnimation;
+    document.head.appendChild(styleElement);
+  }, []);
+
+  const sections = [
+    { name: "home", label: "Home" },
+    { name: "services", label: "Services" },
+    { name: "studio", label: "Studio" },
+    { name: "history", label: "History" },
+    { name: "about", label: "About" },
+  ];
+
   return (
-    <Transition.Root show={sidebarOpen} as={Fragment}>
-      <Dialog
-        as="div"
-        className="relative z-50 lg:hidden"
-        onClose={setSidebarOpen}
+    <>
+      <button
+        className="fixed left-4 top-4 z-50 text-white lg:hidden"
+        onClick={() => setSidebarOpen(!sidebarOpen)}
       >
-        <Transition.Child
-          as={Fragment}
-          enter="transition-opacity ease-linear duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="transition-opacity ease-linear duration-300"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div className="fixed inset-0 bg-gray-900/80" />
-        </Transition.Child>
+        <FiMenu size={30} />
+      </button>
+      <aside
+        className={`fixed inset-y-0 z-50 flex w-64 flex-col bg-gradient-to-br from-gray-900 via-black to-gray-900 p-6 transition-transform ${
+          sidebarOpen ? "translate-x-0" : "-translate-x-full"
+        } lg:hidden`}
+      >
+        <div className="flex grow flex-col gap-y-8 overflow-y-auto rounded-xl bg-white/10 p-6 shadow-xl backdrop-blur-lg">
+          <div className="flex h-16 shrink-0 items-center justify-between">
+            <button
+              className="bg-clip-text text-3xl font-bold text-transparent"
+              style={titleGradient}
+              onClick={() => {
+                setCurrentPage("home");
+                setSidebarOpen(false);
+              }}
+            >
+              ZDesigner AI
+            </button>
+            <button
+              className="text-white"
+              onClick={() => setSidebarOpen(false)}
+            >
+              <FiX size={30} />
+            </button>
+          </div>
 
-        <div className="fixed inset-0 flex">
-          <Transition.Child
-            as={Fragment}
-            enter="transition ease-in-out duration-300 transform"
-            enterFrom="-translate-x-full"
-            enterTo="translate-x-0"
-            leave="transition ease-in-out duration-300 transform"
-            leaveFrom="translate-x-0"
-            leaveTo="-translate-x-full"
-          >
-            <Dialog.Panel className="relative mr-16 flex w-full max-w-xs flex-1">
-              <Transition.Child
-                as={Fragment}
-                enter="ease-in-out duration-300"
-                enterFrom="opacity-0"
-                enterTo="opacity-100"
-                leave="ease-in-out duration-300"
-                leaveFrom="opacity-100"
-                leaveTo="opacity-0"
-              >
-                <div className="absolute left-full top-0 flex w-16 justify-center pt-5">
-                  <button
-                    type="button"
-                    className="-m-2.5 p-2.5"
-                    onClick={() => setSidebarOpen(false)}
-                  >
-                    <span className="sr-only">Close sidebar</span>
-                    <XMarkIcon
-                      className="h-6 w-6 text-white"
-                      aria-hidden="true"
-                    />
-                  </button>
-                </div>
-              </Transition.Child>
-
-              {/* Sidebar component, swap this element with another sidebar if you like */}
-              <aside className="flex grow flex-col gap-y-5 overflow-y-auto bg-gray-900 px-6 pb-2 ring-1 ring-white/10">
-                <div className="flex h-16 shrink-0 items-center">
-                  <h1 className="bg-gradient-to-r from-blue-600 via-green-500 to-indigo-400 bg-clip-text text-xl font-semibold text-transparent">
-                    Interior Designer
-                  </h1>
-                </div>
-                <nav className="flex flex-1 flex-col">
-                  <ul role="list" className="flex flex-1 flex-col gap-y-7">
-                    <li>
-                      <ul role="list" className="-mx-2 space-y-1">
-                        {navigation.map((item) => (
-                          <li key={item.name}>
-                            <a
-                              href={item.href}
-                              className={classNames(
-                                pathName === item.href
-                                  ? "bg-gray-800 text-white"
-                                  : "text-gray-400 hover:bg-gray-800 hover:text-white",
-                                "group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 transition-all duration-300"
-                              )}
-                            >
-                              <item.icon
-                                className="h-6 w-6 shrink-0"
-                                aria-hidden="true"
-                              />
-                              {item.name}
-                            </a>
-                          </li>
-                        ))}
-                      </ul>
-                    </li>
+          <nav className="flex flex-1 flex-col">
+            <ul role="list" className="flex flex-1 flex-col gap-y-6">
+              {sections.map((section) => (
+                <li key={section.name}>
+                  <ul role="list" className="mt-2 space-y-2">
+                    {(navigation[section.name] || []).map((item) => (
+                      <li key={item.name}>
+                        <Link
+                          href={item.href}
+                          className={classNames(
+                            pathName === item.href
+                              ? "scale-105 transform bg-gradient-to-r from-pink-500 via-red-500 to-yellow-500 text-black shadow-lg"
+                              : "text-gray-300 shadow-md hover:bg-gradient-to-r hover:from-pink-500 hover:via-red-500 hover:to-yellow-500 hover:text-black hover:shadow-lg",
+                            "group flex gap-x-4 rounded-lg p-4 text-base font-semibold transition-all duration-300 ease-in-out"
+                          )}
+                          onClick={() => setSidebarOpen(false)}
+                        >
+                          <item.icon
+                            className={classNames(
+                              pathName === item.href
+                                ? "text-black"
+                                : "text-gray-300 group-hover:text-black",
+                              "h-6 w-6 shrink-0 transition-all duration-300 ease-in-out"
+                            )}
+                            aria-hidden="true"
+                          />
+                          {item.name}
+                        </Link>
+                      </li>
+                    ))}
                   </ul>
-                </nav>
-              </aside>
-            </Dialog.Panel>
-          </Transition.Child>
+                </li>
+              ))}
+            </ul>
+          </nav>
         </div>
-      </Dialog>
-    </Transition.Root>
+      </aside>
+    </>
   );
 }

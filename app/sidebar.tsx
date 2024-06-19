@@ -7,14 +7,18 @@ import { DesktopSidebar } from "./desktop-sidebar";
 
 export function Sidebar() {
   const [sidebarOpen, setSidebarOpen] = useState<boolean>(false);
+  const [currentPage, setCurrentPage] = useState<string>("home");
 
   return (
     <>
       <MobileSidebar
         sidebarOpen={sidebarOpen}
         setSidebarOpen={setSidebarOpen}
+        setCurrentPage={setCurrentPage} // Add this line
       />
-      <DesktopSidebar />
+      <DesktopSidebar
+        setCurrentPage={setCurrentPage} // Add this line
+      />
       <Header onClick={() => setSidebarOpen(true)} />
     </>
   );
