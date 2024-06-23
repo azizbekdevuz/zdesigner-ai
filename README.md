@@ -8,8 +8,8 @@
 
 In your Terminal app
 
-- Type `git clone git@github.com:siegblink/interior-designer-ai.git`
-- Or type `git clone https://github.com/siegblink/interior-designer-ai.git`
+- Type `git clone git@github.com:azizbekdevuz/zdesigner-ai.git`
+- Or type `git clone https://github.com/azizbekdevuz/zdesigner-ai.git`
 
 ### 2. Install the project dependencies
 
@@ -32,11 +32,11 @@ Go to the project's directory
 
 ### 6. Rename the `.env.example` file to `.env.local`
 
-### 7. In `.env.local`, replace the placeholder _your_api_token_ with your API token
+### 7. In `.env.local`, replace the placeholder _YOUR_REPLICATE_API_TOKEN_HERE_ with your API token
 
 ```
 # Replace 'your-api-token' with your own API token from replicate
-REPLICATE_API_TOKEN=your_api_token
+REPLICATE_API_TOKEN=YOUR_REPLICATE_API_TOKEN_HERE
 ```
 
 ### 8. Run the project
