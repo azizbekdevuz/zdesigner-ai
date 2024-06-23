@@ -596,7 +596,7 @@ export default function HomePage({ currentPage = "home" }: { currentPage?: strin
                       Change Colors
                     </button>
                   </div>
-                  <div className="mb-4 w-full max-w-lg">
+                  {/* <div className="mb-4 w-full max-w-lg">
                     <label htmlFor="objectRemovalPrompt" className="block text-sm font-medium text-white">
                       Remove objects:
                     </label>
@@ -617,7 +617,7 @@ export default function HomePage({ currentPage = "home" }: { currentPage?: strin
                     >
                       Remove Objects
                     </button>
-                  </div>
+                  </div> */}
                 </div>
               )}
       
